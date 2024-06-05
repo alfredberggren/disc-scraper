@@ -1,36 +1,26 @@
-import requests
-import json
-import re
-from bs4 import BeautifulSoup
+from html_parser import DiscParser
 
-def test():
-    # response = requests.get("https://disctorget.se/discar/photon-proton-7")
-    with open("/home/alfred/temp.txt", "r") as temp:
-        data = temp.read()
-    match = re.search("JSON\\.parse\\('(.*)'\\)", data)
-    obj = json.loads(match.group(1))
-    print(obj["items"][0]["price"])
+if __name__ == "__main__":
+    main()
 
-def get_html(url: str) -> str:
-    """
-    Gets html content of a url
-    """
+disc_parser = DiscParser()
 
-    return requests.get(url).text
-
-def collect_disc_urls(base_url: str) -> set[str]:
-    """
-    Collects URL's under the /discar endpoint
-    """
-
-    base_document = get_html(base_url)
-    soup = BeautifulSoup(base_document, 'html.parser')
+def main():
+    manufacturer_urls = collect_manufacturer_urls()
     disc_urls = set()
-    for link in soup.find_all('a'):
-        url = link.get('href')
-        if re.match("/discar/.*", url):
-            disc_urls.add(f"https://disctorget.se{url}")
-    return disc_urls
+    for m_url in manufacturer_urls:
+        d_urls = collect_disc_urls(m_url)
+        for d_url in d_urls:
+            disc_urls.add(d_url)
+
+    discs = set()
+    for url in disc_urls:
+        discs.add(disc_parser.get_disc_from_url(url))
+
+def collect_manufacturer_urls():
+    return disc_parser.collect_urls("https://disctorget.se/", "/marken/.*")
+
+def collect_disc_urls(base_url: str):
+    return disc_parser.collect_urls(base_url, "/discar/.*")
 
 
-collect_disc_urls("https://disctorget.se/marken/latitude-64")
