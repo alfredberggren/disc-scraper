@@ -3,7 +3,6 @@ from html_parser import DiscParser
 disc_parser = DiscParser()
 
 def main():
-    print("helol")
     # manufacturer_urls = collect_manufacturer_urls()
     # disc_urls = set()
     # for m_url in manufacturer_urls:
@@ -14,6 +13,8 @@ def main():
     # discs = set()
     # for url in disc_urls:
     #     discs.add(disc_parser.get_disc_from_url(url))
+    url = "https://disctorget.se/discar/35-magician-active-6"
+    disc_parser.get_disc_from_url(url)
 
 if __name__ == "__main__":
     main()

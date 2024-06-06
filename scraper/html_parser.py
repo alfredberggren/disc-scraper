@@ -2,10 +2,13 @@
 HTML parsing
 """
 
-import requests
-import json
 import re
+
+import requests
 from bs4 import BeautifulSoup
+
+import plastics
+
 
 def init_recognized_plastics():
     base_document = get_html("https://discsport.se/discgolf/guider/om-plast")
@@ -33,17 +36,8 @@ def get_html(url: str) -> str:
 
 class DiscParser:
     def __init__(self):
-        self.recognized_plastics = init_recognized_plastics() 
-        self.recognized_molds = init_recognized_molds()
-    # TODO: get list of plastics from https://discsport.se/discgolf/guider/om-plast#list-plastic
-    # TODO: get list of molds (?)
-    # def test():
-    #     response = requests.get("https://disctorget.se/discar/photon-proton-7")
-    #     with open("/home/alfred/temp.txt", "r") as temp:
-    #         data = temp.read()
-    #     match = re.search("JSON\\.parse\\('(.*)'\\)", data)
-    #     obj = json.loads(match.group(1))
-    #     print(obj["items"][0]["price"])
+        self.recognized_plastics = plastics.PLASTICS
+
     def collect_urls(base_url: str, pattern: str) -> set[str]:
         """
         Collects URL's under the base url
@@ -59,10 +53,17 @@ class DiscParser:
                 urls.add(f"https://disctorget.se{url}")
         return urls
 
-    def get_disc_from_url(url: str):
+    def get_disc_from_url(self, url: str):
         base_document = get_html(url)
         soup = BeautifulSoup(base_document, "html.parser")
 
+        title = re.search("https://disctorget.se/discar/(.*)", url).group(1) 
+
+        for plastic in self.recognized_plastics:
+            parts = title.split("-")
+            for part in parts:
+                if part == plastic:
+                    print(plastic)
         # TODO: get mold name
 
         # TODO: get plastic name
