@@ -36,7 +36,13 @@ def get_html(url: str) -> str:
 
 class DiscParser:
     def __init__(self):
-        self.recognized_plastics = plastics.PLASTICS
+        recognized_plastics = set()
+        for p in plastics.PLASTICS:
+            v = plastics.variations(p)
+            if v is not None:
+                recognized_plastics.update(v)
+        self.recognized_plastics = recognized_plastics
+        print(self.recognized_plastics)
 
     def collect_urls(base_url: str, pattern: str) -> set[str]:
         """
@@ -59,10 +65,10 @@ class DiscParser:
 
         title = re.search("https://disctorget.se/discar/(.*)", url).group(1) 
 
+        parts = title.split("-")
         for plastic in self.recognized_plastics:
-            parts = title.split("-")
             for part in parts:
-                if part in plastic:
+                if part.casefold() == plastic.casefold():
                     print(plastic)
         # TODO: get mold name
 

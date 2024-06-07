@@ -1,4 +1,5 @@
 import re
+
 PLASTICS = {
     "latitude-64/frost",
     "dynamic-discs/fuzion",
@@ -278,12 +279,11 @@ def variations(plastic_str: str):
 
     if manufacturer.casefold() == "discmania":
         plastic_variations.update(discmania_variations(plastic_name))
-        
+
     temp = plastic_variations.copy()
     for var in temp:
         if "-" in var:
             plastic_variations.add(var.replace("-", " "))
-
 
     return plastic_variations
 
@@ -301,5 +301,3 @@ def discmania_variations(plastic_name: str):
         variations.add(re.search("(.*)-line", plastic_name).group(1))
 
     return variations
-
-
