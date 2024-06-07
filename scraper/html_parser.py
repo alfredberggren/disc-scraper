@@ -36,13 +36,7 @@ def get_html(url: str) -> str:
 
 class DiscParser:
     def __init__(self):
-        recognized_plastics = set()
-        for p in plastics.PLASTICS:
-            v = plastics.variations(p)
-            if v is not None:
-                recognized_plastics.update(v)
-        self.recognized_plastics = recognized_plastics
-        print(self.recognized_plastics)
+        self.recognized_plastics = plastics.PLASTICS
 
     def collect_urls(base_url: str, pattern: str) -> set[str]:
         """
@@ -63,17 +57,24 @@ class DiscParser:
         base_document = get_html(url)
         soup = BeautifulSoup(base_document, "html.parser")
 
-        title = re.search("https://disctorget.se/discar/(.*)", url).group(1) 
+        for c in soup.find_all("meta"):
+            if c.get("property") == "og:title" and c.get("content") != "Disctorget":
+                title = c.get("content")
+        title = re.search("(.*) - Disctorget", title).group(1).replace(" ", "-").lower()
 
-        parts = title.split("-")
-        for plastic in self.recognized_plastics:
-            for part in parts:
-                if part.casefold() == plastic.casefold():
-                    print(plastic)
-        # TODO: get mold name
+        plastic_name = ""
+        mold_name = ""
+        for p in self.recognized_plastics:
+            p_vars = plastics.variations(p)
+            if p_vars is None:
+                continue
+            for var in p_vars:
+                p_match = re.match(f"(.*)-{var}.*", title)
+                if p_match:
+                    plastic_name = p.split("/")[1]
+                    mold_name = p_match.group(1)
 
-        # TODO: get plastic name
-
+        
         # TODO: get price
 
 
