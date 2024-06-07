@@ -16,7 +16,7 @@ def main():
     #     discs.add(disc_parser.get_disc_from_url(url))
     # url = "https://disctorget.se/discar/35-magician-active-6"
     # disc_parser.get_disc_from_url(url)
-    print(variations("/"))
+    print(variations("discmania/active-premium-line"))
 
 if __name__ == "__main__":
     main()
