@@ -277,27 +277,28 @@ def variations(plastic_str: str):
     plastic_variations.add(plastic_name)
 
     if manufacturer.casefold() == "discmania":
-        plastic_variations.update(discmania_variations(plastic_variations, plastic_name))
+        plastic_variations.update(discmania_variations(plastic_name))
+        
+    temp = plastic_variations.copy()
+    for var in temp:
+        if "-" in var:
+            plastic_variations.add(var.replace("-", " "))
+
 
     return plastic_variations
 
 
-def discmania_variations(variations: set, plastic_name: str):
+def discmania_variations(plastic_name: str):
     """
     Discmania usually puts "line" after their plastics name.
     This method removes this variation to match on sites that doesn't use this particular notation for various reasons
     """
+    variations = set()
 
     if "line" not in plastic_name:
         variations.add(f"{plastic_name}-line")
     else:
         variations.add(re.search("(.*)-line", plastic_name).group(1))
-
-    temp = variations.copy()
-    print(temp)
-    for var in temp:
-        if "-" in var:
-            variations.add(var.replace("-", " "))
 
     return variations
 
