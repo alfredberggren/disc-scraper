@@ -2,6 +2,7 @@
 HTML parsing
 """
 
+from disc import Disc
 import re
 
 import requests
@@ -25,6 +26,7 @@ def init_recognized_plastics():
             recognized_plastics.add(plastic.group(1))
 
     return recognized_plastics
+
 
 def get_html(url: str) -> str:
     """
@@ -60,6 +62,8 @@ class DiscParser:
         for c in soup.find_all("meta"):
             if c.get("property") == "og:title" and c.get("content") != "Disctorget":
                 title = c.get("content")
+            if c.get("itemprop") == "price":
+                price = int(c.get("content"))
         title = re.search("(.*) - Disctorget", title).group(1).replace(" ", "-").lower()
 
         plastic_name = ""
@@ -71,10 +75,14 @@ class DiscParser:
             for var in p_vars:
                 p_match = re.match(f"(.*)-{var}.*", title)
                 if p_match:
-                    plastic_name = p.split("/")[1]
+                    p = p.split("/")
+                    manufacturer = p[0]
+                    plastic_name = p[1]
                     mold_name = p_match.group(1)
 
-        
-        # TODO: get price
-
-
+        return Disc(
+            mold_name=mold_name,
+            plastic=plastic_name,
+            manufacturer=manufacturer,
+            price=price,
+        )
