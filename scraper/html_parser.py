@@ -20,7 +20,7 @@ def init_recognized_plastics():
             url = link.get("href")
         else:
             continue
-        plastic = re.search("https://discsport.se/plast/\\w*/(.*)", url)
+        plastic = re.search("https://discsport.se/plast/(.*)", url)
         if plastic:
             recognized_plastics.add(plastic.group(1))
 
@@ -62,7 +62,7 @@ class DiscParser:
         for plastic in self.recognized_plastics:
             parts = title.split("-")
             for part in parts:
-                if part == plastic:
+                if part in plastic:
                     print(plastic)
         # TODO: get mold name
 

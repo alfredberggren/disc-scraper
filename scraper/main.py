@@ -1,4 +1,5 @@
 from html_parser import DiscParser
+from plastics import variations
 
 disc_parser = DiscParser()
 
@@ -13,8 +14,9 @@ def main():
     # discs = set()
     # for url in disc_urls:
     #     discs.add(disc_parser.get_disc_from_url(url))
-    url = "https://disctorget.se/discar/35-magician-active-6"
-    disc_parser.get_disc_from_url(url)
+    # url = "https://disctorget.se/discar/35-magician-active-6"
+    # disc_parser.get_disc_from_url(url)
+    print(variations("/"))
 
 if __name__ == "__main__":
     main()
