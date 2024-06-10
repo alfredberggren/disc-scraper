@@ -20,7 +20,10 @@ def main():
 
     discs = set()
     for url in disc_urls:
-        discs.add(disc_parser.get_disc_from_url(url))
+        found_disc = disc_parser.get_disc_from_url(url)
+        if found_disc is None:
+            continue
+        discs.add(found_disc)
         break
 
     crud.insert_discs(discs)

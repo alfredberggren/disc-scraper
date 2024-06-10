@@ -67,6 +67,9 @@ class DiscParser:
                 price = int(c.get("content"))
         title = re.search("(.*) - Disctorget", title).group(1).replace(" ", "-").lower()
 
+        if price == 0:
+            return None
+
         manufacturer = ""
         plastic_name = ""
         mold_name = ""
