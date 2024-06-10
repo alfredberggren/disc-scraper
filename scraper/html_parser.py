@@ -40,7 +40,7 @@ class DiscParser:
     def __init__(self):
         self.recognized_plastics = plastics.PLASTICS
 
-    def collect_urls(base_url: str, pattern: str) -> set[str]:
+    def collect_urls(self, base_url: str, pattern: str) -> set[str]:
         """
         Collects URL's under the base url
         """
@@ -51,13 +51,14 @@ class DiscParser:
         for link in soup.find_all("a"):
             url = link.get("href")
             if re.match(pattern, url):
-                print(url)
                 urls.add(f"https://disctorget.se{url}")
         return urls
 
     def get_disc_from_url(self, url: str):
         base_document = get_html(url)
         soup = BeautifulSoup(base_document, "html.parser")
+
+        price: int = 0
 
         for c in soup.find_all("meta"):
             if c.get("property") == "og:title" and c.get("content") != "Disctorget":
@@ -66,6 +67,7 @@ class DiscParser:
                 price = int(c.get("content"))
         title = re.search("(.*) - Disctorget", title).group(1).replace(" ", "-").lower()
 
+        manufacturer = ""
         plastic_name = ""
         mold_name = ""
         for p in self.recognized_plastics:
@@ -85,4 +87,5 @@ class DiscParser:
             plastic=plastic_name,
             manufacturer=manufacturer,
             price=price,
+            url=url,
         )
