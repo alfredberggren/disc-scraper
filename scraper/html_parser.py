@@ -10,6 +10,12 @@ from bs4 import BeautifulSoup
 
 import plastics
 
+class UnparseableHTMLException(Exception):
+    def __init__(self, url):
+        self.url = url
+        self.message = f"Failed to parse HTML document for url:\n\t{self.url}"
+        super().__init__(self.message)
+
 
 def init_recognized_plastics():
     base_document = get_html("https://discsport.se/discgolf/guider/om-plast")
@@ -68,7 +74,7 @@ class DiscParser:
         title = re.search("(.*) - Disctorget", title).group(1).replace(" ", "-").lower()
 
         if price == 0:
-            return None
+            raise UnparseableHTMLException(url)
 
         manufacturer = ""
         plastic_name = ""

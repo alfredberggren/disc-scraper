@@ -1,7 +1,8 @@
 import time
 import random
 import crud
-from html_parser import DiscParser
+import warnings
+from html_parser import DiscParser, UnparseableHTMLException
 
 disc_parser = DiscParser()
 
@@ -22,7 +23,10 @@ def main():
 
     discs = set()
     for url in disc_urls:
-        found_disc = disc_parser.get_disc_from_url(url)
+        try:
+            found_disc = disc_parser.get_disc_from_url(url)
+        except UnparseableHTMLException as e:
+            warnings.warn(message=e.message, category=RuntimeWarning)
         if found_disc is None:
             continue
         discs.add(found_disc)
