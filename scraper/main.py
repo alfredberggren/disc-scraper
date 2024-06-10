@@ -1,3 +1,5 @@
+import time
+import random
 import crud
 from html_parser import DiscParser
 
@@ -16,7 +18,7 @@ def main():
         d_urls = collect_disc_urls(m_url)
         for d_url in d_urls:
             disc_urls.add(d_url)
-        break
+        time.sleep(random.choice(range(500, 1500))/1000)
 
     discs = set()
     for url in disc_urls:
@@ -24,11 +26,9 @@ def main():
         if found_disc is None:
             continue
         discs.add(found_disc)
-        break
+        time.sleep(random.choice(range(500, 1500))/1000)
 
     crud.insert_discs(discs)
-
-    print(crud.get_discs())
 
 if __name__ == "__main__":
     main()
