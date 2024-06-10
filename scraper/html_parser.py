@@ -16,6 +16,19 @@ class UnparseableHTMLException(Exception):
         self.message = f"Failed to parse HTML document for url:\n\t{self.url}"
         super().__init__(self.message)
 
+def fetch_price(url: str):
+    base_document = get_html(url)
+    soup = BeautifulSoup(base_document, "html.parser")
+
+    price: int = 0
+
+    for c in soup.find_all("meta"):
+        if c.get("itemprop") == "price":
+            price = int(c.get("content"))
+
+    if price == 0:
+        raise UnparseableHTMLException(url)
+    return price
 
 def init_recognized_plastics():
     base_document = get_html("https://discsport.se/discgolf/guider/om-plast")
