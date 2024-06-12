@@ -44,6 +44,7 @@ def main():
         except UnparseableHTMLException as e:
             # Warn when a disc could not be parsed for whatever reason.
             warnings.warn(message=e.message, category=RuntimeWarning)
+        print(f"found disc {found_disc.mold_name} from url: {url}")
         discs.add(found_disc)
         time.sleep(random.choice(range(500, 1500))/1000)
 

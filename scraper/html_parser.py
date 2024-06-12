@@ -99,9 +99,9 @@ class DiscParser:
             for var in p_vars:
                 p_match = re.match(f"(.*)-{var}.*", title)
                 if p_match:
-                    p = p.split("/")
-                    manufacturer = p[0]
-                    plastic_name = p[1]
+                    p1 = p.split("/")
+                    manufacturer = p1[0]
+                    plastic_name = p1[1]
                     mold_name = p_match.group(1)
 
         return Disc(
