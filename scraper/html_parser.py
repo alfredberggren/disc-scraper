@@ -10,11 +10,13 @@ from bs4 import BeautifulSoup
 
 import plastics
 
+
 class UnparseableHTMLException(Exception):
     def __init__(self, url):
         self.url = url
         self.message = f"Failed to parse HTML document for url:\n\t{self.url}"
         super().__init__(self.message)
+
 
 def fetch_price(url: str):
     base_document = get_html(url)
@@ -29,6 +31,7 @@ def fetch_price(url: str):
     if price == 0:
         raise UnparseableHTMLException(url)
     return price
+
 
 def init_recognized_plastics():
     base_document = get_html("https://discsport.se/discgolf/guider/om-plast")
@@ -97,12 +100,16 @@ class DiscParser:
             if p_vars is None:
                 continue
             for var in p_vars:
+                # TODO: fix bug, if var == 's' (from any s-line), anything beginning with s matches
                 p_match = re.match(f"(.*)-{var}.*", title)
                 if p_match:
                     p1 = p.split("/")
                     manufacturer = p1[0]
                     plastic_name = p1[1]
                     mold_name = p_match.group(1)
+
+        if len(plastic_name) == 0 or len(manufacturer) == 0 or len(mold_name) == 0:
+            raise UnparseableHTMLException(url)
 
         return Disc(
             mold_name=mold_name,

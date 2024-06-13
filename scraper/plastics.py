@@ -299,6 +299,7 @@ def discmania_variations(plastic_name: str):
     if "line" not in plastic_name:
         variations.add(f"{plastic_name}-line")
     else:
+        # TODO: what if 's-line-echo' for example
         variations.add(re.search("(.*)-line", plastic_name).group(1))
 
     return variations
