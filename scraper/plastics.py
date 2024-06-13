@@ -193,6 +193,7 @@ PLASTICS = {
     "discwing/baseline",
     "prodigy/basegrip",
     "prodigy/300",
+    "prodigy/300-soft",
     "gateway/special-blend",
     "westside/",
     "latitude-64/goldhex",
