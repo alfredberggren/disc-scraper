@@ -1,0 +1,44 @@
+body {
+  font-family: Arial;
+  background-color: grey;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+table th {
+  padding: 8px;
+  text-align: left;
+  background: #1c2b1e;
+  color: white;
+}
+
+table tr {
+  padding: 8px;
+}
+
+div.main-page {
+  margin-left: 20%;
+  margin-right: 20%;
+  background-color: white;
+  height: 100%;
+}
+
+div.main-page h1 {
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+div.main-page table {
+  margin-left: 10%;
+}
+
+div.main-page p {
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+tr:hover {
+  background: #eee
+}

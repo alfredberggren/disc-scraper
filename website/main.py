@@ -36,3 +36,12 @@ def get_disc_data(db_session: DbSession):
         headers={"Access-Control-Allow-Origin": "*"},
         content=disc_list,
     )
+
+# IDK if this is how you're supposed to do this!
+@app.get("/static/main.js", response_class=FileResponse)
+def get_main_script():
+    return FileResponse("static/main.js")
+
+@app.get("/static/style.css", response_class=FileResponse)
+def get_style():
+    return FileResponse("static/style.css")
