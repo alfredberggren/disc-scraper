@@ -1,5 +1,4 @@
-from sqlalchemy import String, Integer, Column, DateTime
-from sqlalchemy.sql import func
+from sqlalchemy import String, Integer, Column
 from database import Base
 
 class Disc(Base):

@@ -1,6 +1,6 @@
 // fetches discs
 
-fetch("http://127.0.0.1:8000/data.json")
+fetch("http://195.168.1.185/data.json")
   .then((response) => response.json())
   .then((data) => {
     const tableBody = document.getElementById("disc-table-body");
