@@ -10,7 +10,7 @@ class Disc(Base):
     manufacturer = Column(String)
     price = Column(Integer)
     url = Column(String)
-    last_updated = Column(DateTime(timezone=True), server_default=func.now())
+    last_updated = Column(DateTime(), server_default=func.now())
 
     def __repr__(self):
         return f"Disc[mold_name={self.mold_name}, plastic={self.plastic}, manufacturer = {self.manufacturer}, price = {self.price}, url = {self.url}]"

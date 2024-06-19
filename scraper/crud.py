@@ -38,9 +38,10 @@ def insert_discs(discs: set[Disc]):
                 exists.last_updated = datetime.datetime.now().isoformat()
                 db.add(exists)
             else:
+                d_last_updated: datetime.datetime = exists.last_updated
                 time_since_last_update = (
                     datetime.datetime.now()
-                    - datetime.datetime.fromisoformat(exists.last_updated)
+                    - d_last_updated
                 )
                 if (
                     time_since_last_update > datetime.timedelta(days=7)
@@ -66,7 +67,6 @@ def insert_discs(discs: set[Disc]):
             db.add(db_disc)
 
     db.commit()
-    db.refresh(db_disc)
 
     db.close()
 
