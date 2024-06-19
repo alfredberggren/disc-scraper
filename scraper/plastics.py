@@ -110,7 +110,7 @@ PLASTICS = {
     "latitude-64/grip",
     "kastaplast/k1-soft-x-out",
     "dga/rdga-line",
-    "lone-star-disc/",
+    "lone-star-disc/bravo",
     "prodigy/350g",
     "viking/ground",
     "viking/storm",
@@ -136,19 +136,19 @@ PLASTICS = {
     "discmania/p-line",
     "discmania/",
     "launch-discs/alpha-glow",
-    "evolvent-discs/",
+    "evolvent-discs/apex-80",
     "millennium/quantum-zero-g",
     "dynamic-discs/fuzion-dyemax",
     "discraft/z-glo",
     "dga/signature-line",
     "momentum/buddy",
     "launch-discs/noble",
+    "discmania/horizon",
     "discmania/g-line",
     "prodigy/200",
     "hyzer-bombs/base",
     "innova/gstar",
-    "clash-discs/",
-    "dynamic-discs/hybrid-dd",
+    "dynamic-discs/hybrid-dd;hybrid;hybrid-moonshine",
     "latitude-64/opto",
     "kastaplast/k1-soft",
     "westside/tournament",
@@ -249,6 +249,10 @@ PLASTICS = {
     "kastaplast/k1-glow-x-out",
     "discraft/jawbreaker",
     "prodigy/400-glow",
+    "ev-7/basplast",
+    "westside/moonshine",
+    "discraft/rubber-blend",
+    "innova/halo-star;halo",
 }
 
 
@@ -265,7 +269,9 @@ def variations(plastic_str: str):
 
     parts = plastic_str.split("/")
     manufacturer = parts[0]
-    plastic_name = parts[1]
+    plastic_string = parts[1]
+    inh_variations = plastic_string.split(";")
+    plastic_name = inh_variations[0]
 
     if (
         manufacturer is None
@@ -278,7 +284,10 @@ def variations(plastic_str: str):
     plastic_variations = set()
     plastic_variations.add(plastic_name)
 
-    if manufacturer.casefold() == "discmania":
+    for v in inh_variations:
+        plastic_variations.add(v)
+
+    if manufacturer.casefold() == "discmania" or manufacturer.casefold() == "kastaplast":
         plastic_variations.update(discmania_variations(plastic_name))
 
     temp = plastic_variations.copy()

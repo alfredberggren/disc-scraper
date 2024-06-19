@@ -49,6 +49,13 @@ def main():
 
     crud.insert_discs(discs)
 
+# To debug non-functioning url's
+def single_url(url: str):
+    d = disc_parser.get_disc_from_url(url)
+    discs = set()
+    discs.add(d)
+    crud.insert_discs(discs)
+
 if __name__ == "__main__":
     main()
 

@@ -12,9 +12,9 @@ import plastics
 
 
 class UnparseableHTMLException(Exception):
-    def __init__(self, url):
+    def __init__(self, message, url):
         self.url = url
-        self.message = f"Failed to parse HTML document for url:\n\t{self.url}"
+        self.message = f"Failed to parse HTML document for url:\n\t{self.url}\n{message}"
         super().__init__(self.message)
 
 
@@ -29,7 +29,7 @@ def fetch_price(url: str):
             price = int(c.get("content"))
 
     if price == 0:
-        raise UnparseableHTMLException(url)
+        raise UnparseableHTMLException(message="Could not find price", url=url)
     return price
 
 
@@ -90,7 +90,7 @@ class DiscParser:
         title = re.search("(.*) - Disctorget", title).group(1).replace(" ", "-").lower()
 
         if price == 0:
-            raise UnparseableHTMLException(url)
+            raise UnparseableHTMLException(message="Could not find price", url=url)
 
         manufacturer = ""
         plastic_name = ""
@@ -105,11 +105,16 @@ class DiscParser:
                 if p_match:
                     p1 = p.split("/")
                     manufacturer = p1[0]
-                    plastic_name = p1[1]
+                    plastic_name = p1[1].split(";")[0]
                     mold_name = p_match.group(1)
 
-        if len(plastic_name) == 0 or len(manufacturer) == 0 or len(mold_name) == 0:
-            raise UnparseableHTMLException(url)
+        if len(plastic_name) == 0: 
+            raise UnparseableHTMLException(message="Could not find plastic name", url=url)
+        if len(manufacturer) == 0:
+            raise UnparseableHTMLException(message="Could not find manufacturer name", url=url)
+        if len(mold_name) == 0:
+            raise UnparseableHTMLException(message="Could not find mold name", url=url)
+
 
         return Disc(
             mold_name=mold_name,
